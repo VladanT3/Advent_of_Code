@@ -28,7 +28,7 @@ func Part1() {
 	ErrCheck(err)
 	defer out.Close()
 
-	_, err = out.WriteString(strconv.Itoa(sum))
+	_, err = out.WriteString("Part 1: " + strconv.Itoa(sum))
 	ErrCheck(err)
 
 	out.Sync()
