@@ -31,5 +31,6 @@ func Part2() {
 	defer f.Close()
 
 	_, err = f.WriteString("\nPart 2: " + strconv.Itoa(freq_sum))
+	ErrCheck(err)
 	f.Sync()
 }
