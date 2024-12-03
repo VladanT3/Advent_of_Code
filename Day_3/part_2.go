@@ -37,51 +37,12 @@ func Part2() {
 				_, err = f.Read(dont_str)
 				ErrCheck(err)
 
-				if string(mul_str) == "on't()" {
+				if string(dont_str) == "on't()" {
 					found_dont = true
 					i += 6
 				} else {
 					_, err = f.Seek(-6, io.SeekCurrent)
 					ErrCheck(err)
-				}
-			} else if !found_mul {
-				if char[0] == 'm' {
-					_, err = f.Read(mul_str)
-					ErrCheck(err)
-
-					if string(mul_str) == "ul(" {
-						found_mul = true
-						i += 3
-					} else {
-						_, err = f.Seek(-3, io.SeekCurrent)
-						ErrCheck(err)
-					}
-				}
-			} else {
-				if !set_num_1 {
-					if int(char[0]) >= 48 && int(char[0]) <= 57 {
-						num_1 = (num_1 * 10) + (int(char[0]) - 48)
-					} else if num_1 != 0 && char[0] == ',' {
-						set_num_1 = true
-					} else {
-						found_mul = false
-						num_1 = 0
-					}
-				} else {
-					if int(char[0]) >= 48 && int(char[0]) <= 57 {
-						num_2 = (num_2 * 10) + (int(char[0]) - 48)
-					} else if num_2 != 0 && char[0] == ')' {
-						mul_sum += num_1 * num_2
-						found_mul = false
-						num_1 = 0
-						num_2 = 0
-						set_num_1 = false
-					} else {
-						found_mul = false
-						num_1 = 0
-						num_2 = 0
-						set_num_1 = false
-					}
 				}
 			}
 		} else {
@@ -89,12 +50,53 @@ func Part2() {
 				_, err = f.Read(do_str)
 				ErrCheck(err)
 
-				if string(mul_str) == "o()" {
+				if string(do_str) == "o()" {
 					found_dont = false
 					i += 3
 				} else {
 					_, err = f.Seek(-3, io.SeekCurrent)
 					ErrCheck(err)
+				}
+			}
+		}
+
+		if !found_mul && !found_dont {
+			if char[0] == 'm' {
+				_, err = f.Read(mul_str)
+				ErrCheck(err)
+
+				if string(mul_str) == "ul(" {
+					found_mul = true
+					i += 3
+				} else {
+					_, err = f.Seek(-3, io.SeekCurrent)
+					ErrCheck(err)
+				}
+			}
+		} else if found_mul && !found_dont {
+			if !set_num_1 {
+				if int(char[0]) >= 48 && int(char[0]) <= 57 {
+					num_1 = (num_1 * 10) + (int(char[0]) - 48)
+				} else if num_1 != 0 && char[0] == ',' {
+					set_num_1 = true
+				} else {
+					found_mul = false
+					num_1 = 0
+				}
+			} else {
+				if int(char[0]) >= 48 && int(char[0]) <= 57 {
+					num_2 = (num_2 * 10) + (int(char[0]) - 48)
+				} else if num_2 != 0 && char[0] == ')' {
+					mul_sum += num_1 * num_2
+					found_mul = false
+					num_1 = 0
+					num_2 = 0
+					set_num_1 = false
+				} else {
+					found_mul = false
+					num_1 = 0
+					num_2 = 0
+					set_num_1 = false
 				}
 			}
 		}
