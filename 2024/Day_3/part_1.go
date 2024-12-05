@@ -4,17 +4,19 @@ import (
 	"io"
 	"os"
 	"strconv"
+
+	shared "github.com/VladanT3/Advent_of_Code"
 )
 
 func Part1() {
 	f, err := os.Open("input.txt")
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	defer f.Close()
 
 	eof, err := f.Seek(0, io.SeekEnd)
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	i, err := f.Seek(0, io.SeekStart)
-	ErrCheck(err)
+	shared.ErrCheck(err)
 
 	char := make([]byte, 1)
 	mul_str := make([]byte, 3)
@@ -26,20 +28,20 @@ func Part1() {
 
 	for i < eof {
 		_, err := f.Read(char)
-		ErrCheck(err)
+		shared.ErrCheck(err)
 		i++
 
 		if !found_mul {
 			if char[0] == 'm' {
 				_, err = f.Read(mul_str)
-				ErrCheck(err)
+				shared.ErrCheck(err)
 
 				if string(mul_str) == "ul(" {
 					found_mul = true
 					i += 3
 				} else {
 					_, err = f.Seek(-3, io.SeekCurrent)
-					ErrCheck(err)
+					shared.ErrCheck(err)
 				}
 			}
 		} else {
@@ -72,16 +74,10 @@ func Part1() {
 	}
 
 	out, err := os.Create("output.txt")
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	defer out.Close()
 
 	_, err = out.WriteString("Part 1: " + strconv.Itoa(mul_sum))
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	out.Sync()
-}
-
-func ErrCheck(e error) {
-	if e != nil {
-		panic(e)
-	}
 }

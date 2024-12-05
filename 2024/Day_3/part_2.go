@@ -4,17 +4,19 @@ import (
 	"io"
 	"os"
 	"strconv"
+
+	shared "github.com/VladanT3/Advent_of_Code"
 )
 
 func Part2() {
 	f, err := os.Open("input.txt")
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	defer f.Close()
 
 	eof, err := f.Seek(0, io.SeekEnd)
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	i, err := f.Seek(0, io.SeekStart)
-	ErrCheck(err)
+	shared.ErrCheck(err)
 
 	char := make([]byte, 1)
 	mul_str := make([]byte, 3)
@@ -29,33 +31,33 @@ func Part2() {
 
 	for i < eof {
 		_, err := f.Read(char)
-		ErrCheck(err)
+		shared.ErrCheck(err)
 		i++
 
 		if !found_dont {
 			if char[0] == 'd' {
 				_, err = f.Read(dont_str)
-				ErrCheck(err)
+				shared.ErrCheck(err)
 
 				if string(dont_str) == "on't()" {
 					found_dont = true
 					i += 6
 				} else {
 					_, err = f.Seek(-6, io.SeekCurrent)
-					ErrCheck(err)
+					shared.ErrCheck(err)
 				}
 			}
 		} else {
 			if char[0] == 'd' {
 				_, err = f.Read(do_str)
-				ErrCheck(err)
+				shared.ErrCheck(err)
 
 				if string(do_str) == "o()" {
 					found_dont = false
 					i += 3
 				} else {
 					_, err = f.Seek(-3, io.SeekCurrent)
-					ErrCheck(err)
+					shared.ErrCheck(err)
 				}
 			}
 		}
@@ -63,14 +65,14 @@ func Part2() {
 		if !found_mul && !found_dont {
 			if char[0] == 'm' {
 				_, err = f.Read(mul_str)
-				ErrCheck(err)
+				shared.ErrCheck(err)
 
 				if string(mul_str) == "ul(" {
 					found_mul = true
 					i += 3
 				} else {
 					_, err = f.Seek(-3, io.SeekCurrent)
-					ErrCheck(err)
+					shared.ErrCheck(err)
 				}
 			}
 		} else if found_mul && !found_dont {
@@ -103,10 +105,10 @@ func Part2() {
 	}
 
 	out, err := os.OpenFile("output.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	defer out.Close()
 
 	_, err = out.WriteString("\nPart 2: " + strconv.Itoa(mul_sum))
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	out.Sync()
 }

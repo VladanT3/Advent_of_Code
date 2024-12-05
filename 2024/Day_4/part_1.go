@@ -4,6 +4,8 @@ import (
 	"io"
 	"os"
 	"strconv"
+
+	shared "github.com/VladanT3/Advent_of_Code"
 )
 
 func Part1() {
@@ -70,29 +72,23 @@ func Part1() {
 	}
 
 	out, err := os.Create("output.txt")
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	defer out.Close()
 
 	_, err = out.WriteString("Part 1: " + strconv.Itoa(xmas_counter))
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	out.Sync()
-}
-
-func ErrCheck(e error) {
-	if e != nil {
-		panic(e)
-	}
 }
 
 func GetData() [][]byte {
 	f, err := os.Open("input.txt")
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	defer f.Close()
 
 	eof, err := f.Seek(0, io.SeekEnd)
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	i, err := f.Seek(0, io.SeekStart)
-	ErrCheck(err)
+	shared.ErrCheck(err)
 
 	char := make([]byte, 1)
 	out := [][]byte{}
@@ -100,7 +96,7 @@ func GetData() [][]byte {
 
 	for i < eof {
 		_, err = f.Read(char)
-		ErrCheck(err)
+		shared.ErrCheck(err)
 		i++
 
 		if string(char[0]) == "\n" {

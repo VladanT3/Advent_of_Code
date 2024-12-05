@@ -3,6 +3,8 @@ package day1_24
 import (
 	"os"
 	"strconv"
+
+	shared "github.com/VladanT3/Advent_of_Code"
 )
 
 func Part2() {
@@ -27,10 +29,10 @@ func Part2() {
 	}
 
 	f, err := os.OpenFile("output.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	defer f.Close()
 
 	_, err = f.WriteString("\nPart 2: " + strconv.Itoa(freq_sum))
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	f.Sync()
 }

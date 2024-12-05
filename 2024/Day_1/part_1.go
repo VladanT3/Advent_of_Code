@@ -6,6 +6,8 @@ import (
 	"os"
 	"sort"
 	"strconv"
+
+	shared "github.com/VladanT3/Advent_of_Code"
 )
 
 func Part1() {
@@ -25,30 +27,24 @@ func Part1() {
 	}
 
 	out, err := os.Create("output.txt")
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	defer out.Close()
 
 	_, err = out.WriteString("Part 1: " + strconv.Itoa(sum))
-	ErrCheck(err)
+	shared.ErrCheck(err)
 
 	out.Sync()
 }
 
-func ErrCheck(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
 func GetLists() ([]int, []int) {
 	f, err := os.Open("input.txt")
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	defer f.Close()
 
 	eof, err := f.Seek(0, io.SeekEnd)
-	ErrCheck(err)
+	shared.ErrCheck(err)
 	i, err := f.Seek(0, io.SeekStart)
-	ErrCheck(err)
+	shared.ErrCheck(err)
 
 	arr1 := []int{}
 	arr2 := []int{}
@@ -56,22 +52,22 @@ func GetLists() ([]int, []int) {
 
 	for i < eof {
 		_, err := f.Read(str_num)
-		ErrCheck(err)
+		shared.ErrCheck(err)
 		num, err := strconv.Atoi(string(str_num))
-		ErrCheck(err)
+		shared.ErrCheck(err)
 		arr1 = append(arr1, num)
 
 		_, err = f.Seek(3, io.SeekCurrent)
-		ErrCheck(err)
+		shared.ErrCheck(err)
 
 		_, err = f.Read(str_num)
-		ErrCheck(err)
+		shared.ErrCheck(err)
 		num, err = strconv.Atoi(string(str_num))
-		ErrCheck(err)
+		shared.ErrCheck(err)
 		arr2 = append(arr2, num)
 
 		_, err = f.Seek(1, io.SeekCurrent)
-		ErrCheck(err)
+		shared.ErrCheck(err)
 
 		i += 14
 	}
