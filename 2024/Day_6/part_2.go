@@ -48,6 +48,11 @@ func Part2() {
 				}
 				k++
 			}
+			cord := coordinate{
+				i: i,
+				j: j,
+			}
+			path_directions[cord] = append(path_directions[cord], "up")
 			i--
 			if i < 0 {
 				path_found = true
@@ -57,11 +62,6 @@ func Part2() {
 		if path_found {
 			break
 		}
-		cord := coordinate{
-			i: i,
-			j: j,
-		}
-		path_directions[cord] = append(path_directions[cord], "up")
 		wall_placed = false
 		i++
 
@@ -90,6 +90,11 @@ func Part2() {
 				}
 				k++
 			}
+			cord := coordinate{
+				i: i,
+				j: j,
+			}
+			path_directions[cord] = append(path_directions[cord], "right")
 			j++
 			if j >= len(level_map[0]) {
 				path_found = true
@@ -99,11 +104,6 @@ func Part2() {
 		if path_found {
 			break
 		}
-		cord = coordinate{
-			i: i,
-			j: j,
-		}
-		path_directions[cord] = append(path_directions[cord], "right")
 		wall_placed = false
 		j--
 
@@ -132,6 +132,11 @@ func Part2() {
 				}
 				k--
 			}
+			cord := coordinate{
+				i: i,
+				j: j,
+			}
+			path_directions[cord] = append(path_directions[cord], "down")
 			i++
 			if i >= len(level_map) {
 				path_found = true
@@ -141,11 +146,6 @@ func Part2() {
 		if path_found {
 			break
 		}
-		cord = coordinate{
-			i: i,
-			j: j,
-		}
-		path_directions[cord] = append(path_directions[cord], "down")
 		wall_placed = false
 		i--
 
@@ -174,6 +174,11 @@ func Part2() {
 				}
 				k--
 			}
+			cord := coordinate{
+				i: i,
+				j: j,
+			}
+			path_directions[cord] = append(path_directions[cord], "left")
 			j--
 			if j < 0 {
 				path_found = true
@@ -183,11 +188,6 @@ func Part2() {
 		if path_found {
 			break
 		}
-		cord = coordinate{
-			i: i,
-			j: j,
-		}
-		path_directions[cord] = append(path_directions[cord], "left")
 		wall_placed = false
 		j++
 	}
