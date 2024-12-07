@@ -7,20 +7,17 @@ import (
 	shared "github.com/VladanT3/Advent_of_Code"
 )
 
+type coordinate struct {
+	i int
+	j int
+}
+
 func Part2() {
 	level_map, start := GetMapAndStart()
-	seen_path := [][]bool{}
+	path_directions := make(map[coordinate][]string)
 	num_of_walls := 0
 	path_found := false
-	placed_wall := false
-
-	for _, arr := range level_map {
-		temp_arr := []bool{}
-		for range arr {
-			temp_arr = append(temp_arr, false)
-		}
-		seen_path = append(seen_path, temp_arr)
-	}
+	wall_placed := false
 
 	i := start[0]
 	j := start[1]
@@ -30,24 +27,27 @@ func Part2() {
 		for level_map[i][j] != '#' {
 			k := j
 			for k < len(level_map[0]) {
-				if level_map[i][k] == '#' && seen_path[i][k-1] {
-					l := i
-					for l < len(level_map) {
-						if level_map[l][k-1] == '#' && seen_path[l-1][k-1] {
-							num_of_walls++
-							placed_wall = true
+				if level_map[i][k] == '#' {
+					cord := coordinate{
+						i: i,
+						j: k - 1,
+					}
+					dirs, ok := path_directions[cord]
+					if ok {
+						for _, dir := range dirs {
+							if dir == "right" || dir == "down" {
+								num_of_walls++
+								wall_placed = true
+								break
+							}
+						}
+						if wall_placed {
 							break
 						}
-						l++
-					}
-					if placed_wall {
-						placed_wall = false
-						break
 					}
 				}
 				k++
 			}
-			seen_path[i][j] = true
 			i--
 			if i < 0 {
 				path_found = true
@@ -57,30 +57,39 @@ func Part2() {
 		if path_found {
 			break
 		}
+		cord := coordinate{
+			i: i,
+			j: j,
+		}
+		path_directions[cord] = append(path_directions[cord], "up")
+		wall_placed = false
 		i++
 
 		//RIGHT
 		for level_map[i][j] != '#' {
 			k := i
 			for k < len(level_map) {
-				if level_map[k][j] == '#' && seen_path[k-1][j] {
-					l := j
-					for l >= 0 {
-						if level_map[k-1][l] == '#' && seen_path[k-1][l+1] {
-							num_of_walls++
-							placed_wall = true
+				if level_map[k][j] == '#' {
+					cord := coordinate{
+						i: k - 1,
+						j: j,
+					}
+					dirs, ok := path_directions[cord]
+					if ok {
+						for _, dir := range dirs {
+							if dir == "down" || dir == "left" {
+								num_of_walls++
+								wall_placed = true
+								break
+							}
+						}
+						if wall_placed {
 							break
 						}
-						l--
-					}
-					if placed_wall {
-						placed_wall = false
-						break
 					}
 				}
 				k++
 			}
-			seen_path[i][j] = true
 			j++
 			if j >= len(level_map[0]) {
 				path_found = true
@@ -90,30 +99,39 @@ func Part2() {
 		if path_found {
 			break
 		}
+		cord = coordinate{
+			i: i,
+			j: j,
+		}
+		path_directions[cord] = append(path_directions[cord], "right")
+		wall_placed = false
 		j--
 
 		//DOWN
 		for level_map[i][j] != '#' {
 			k := j
 			for k >= 0 {
-				if level_map[i][k] == '#' && seen_path[i][k+1] {
-					l := i
-					for l >= 0 {
-						if level_map[l][k+1] == '#' && seen_path[l+1][k+1] {
-							num_of_walls++
-							placed_wall = true
+				if level_map[i][k] == '#' {
+					cord := coordinate{
+						i: i,
+						j: k + 1,
+					}
+					dirs, ok := path_directions[cord]
+					if ok {
+						for _, dir := range dirs {
+							if dir == "left" || dir == "up" {
+								num_of_walls++
+								wall_placed = true
+								break
+							}
+						}
+						if wall_placed {
 							break
 						}
-						l--
-					}
-					if placed_wall {
-						placed_wall = false
-						break
 					}
 				}
 				k--
 			}
-			seen_path[i][j] = true
 			i++
 			if i >= len(level_map) {
 				path_found = true
@@ -123,30 +141,39 @@ func Part2() {
 		if path_found {
 			break
 		}
+		cord = coordinate{
+			i: i,
+			j: j,
+		}
+		path_directions[cord] = append(path_directions[cord], "down")
+		wall_placed = false
 		i--
 
 		//LEFT
 		for level_map[i][j] != '#' {
 			k := i
 			for k >= 0 {
-				if level_map[k][j] == '#' && seen_path[k+1][j] {
-					l := j
-					for l < len(level_map[0]) {
-						if level_map[k+1][l] == '#' && seen_path[k+1][l-1] {
-							num_of_walls++
-							placed_wall = true
+				if level_map[k][j] == '#' {
+					cord := coordinate{
+						i: k + 1,
+						j: j,
+					}
+					dirs, ok := path_directions[cord]
+					if ok {
+						for _, dir := range dirs {
+							if dir == "up" || dir == "right" {
+								num_of_walls++
+								wall_placed = true
+								break
+							}
+						}
+						if wall_placed {
 							break
 						}
-						l++
-					}
-					if placed_wall {
-						placed_wall = false
-						break
 					}
 				}
 				k--
 			}
-			seen_path[i][j] = true
 			j--
 			if j < 0 {
 				path_found = true
@@ -156,6 +183,12 @@ func Part2() {
 		if path_found {
 			break
 		}
+		cord = coordinate{
+			i: i,
+			j: j,
+		}
+		path_directions[cord] = append(path_directions[cord], "left")
+		wall_placed = false
 		j++
 	}
 
