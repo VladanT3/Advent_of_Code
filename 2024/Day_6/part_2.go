@@ -39,6 +39,12 @@ func Part2() {
 								num_of_walls++
 								wall_placed = true
 								break
+							} else {
+								if IsLoop(level_map, []int{i, k - 1}, "right") {
+									num_of_walls++
+									wall_placed = true
+									break
+								}
 							}
 						}
 						if wall_placed {
@@ -81,6 +87,12 @@ func Part2() {
 								num_of_walls++
 								wall_placed = true
 								break
+							} else {
+								if IsLoop(level_map, []int{k - 1, j}, "down") {
+									num_of_walls++
+									wall_placed = true
+									break
+								}
 							}
 						}
 						if wall_placed {
@@ -123,6 +135,12 @@ func Part2() {
 								num_of_walls++
 								wall_placed = true
 								break
+							} else {
+								if IsLoop(level_map, []int{i, k + 1}, "left") {
+									num_of_walls++
+									wall_placed = true
+									break
+								}
 							}
 						}
 						if wall_placed {
@@ -165,6 +183,12 @@ func Part2() {
 								num_of_walls++
 								wall_placed = true
 								break
+							} else {
+								if IsLoop(level_map, []int{k + 1, j}, "up") {
+									num_of_walls++
+									wall_placed = true
+									break
+								}
 							}
 						}
 						if wall_placed {
@@ -199,4 +223,112 @@ func Part2() {
 	_, err = out.WriteString("\nPart 2: " + strconv.Itoa(num_of_walls))
 	shared.ErrCheck(err)
 	out.Sync()
+}
+
+func IsLoop(level_map [][]byte, start []int, start_dir string) bool {
+	i := start[0]
+	j := start[1]
+	path_found := false
+	path := make(map[coordinate][]string)
+
+	for {
+		if start_dir == "up" || start_dir == "" {
+			for level_map[i][j] != '#' {
+				cord := coordinate{i, j}
+				dirs, ok := path[cord]
+				if ok {
+					for _, dir := range dirs {
+						if dir == "up" {
+							return true
+						}
+					}
+				}
+				path[cord] = append(path[cord], "up")
+				start_dir = ""
+				i--
+				if i < 0 {
+					path_found = true
+					break
+				}
+			}
+			if path_found {
+				break
+			}
+			i++
+		}
+		if start_dir == "right" || start_dir == "" {
+			for level_map[i][j] != '#' {
+				cord := coordinate{i, j}
+				dirs, ok := path[cord]
+				if ok {
+					for _, dir := range dirs {
+						if dir == "right" {
+							return true
+						}
+					}
+				}
+				path[cord] = append(path[cord], "right")
+				start_dir = ""
+				j++
+				if j >= len(level_map[0]) {
+					path_found = true
+					break
+				}
+			}
+			if path_found {
+				break
+			}
+			j--
+		}
+		if start_dir == "down" || start_dir == "" {
+			for level_map[i][j] != '#' {
+				cord := coordinate{i, j}
+				dirs, ok := path[cord]
+				if ok {
+					for _, dir := range dirs {
+						if dir == "down" {
+							return true
+						}
+					}
+				}
+				path[cord] = append(path[cord], "down")
+				start_dir = ""
+				i++
+				if i >= len(level_map) {
+					path_found = true
+					break
+				}
+			}
+			if path_found {
+				break
+			}
+			i--
+		}
+		if start_dir == "left" || start_dir == "" {
+			for level_map[i][j] != '#' {
+				cord := coordinate{i, j}
+				dirs, ok := path[cord]
+				if ok {
+					for _, dir := range dirs {
+						if dir == "left" {
+							return true
+						}
+					}
+				}
+				path[cord] = append(path[cord], "left")
+				start_dir = ""
+				j--
+				if j < 0 {
+					path_found = true
+					break
+				}
+			}
+			if path_found {
+				break
+			}
+			j++
+		}
+	}
+
+	return false
 }
