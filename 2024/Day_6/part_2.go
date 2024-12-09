@@ -228,6 +228,15 @@ func Part2() {
 func IsLoop(level_map [][]byte, start []int, start_dir string) bool {
 	i := start[0]
 	j := start[1]
+	if start_dir == "up" {
+		level_map[i][j-1] = '#'
+	} else if start_dir == "right" {
+		level_map[i-1][j] = '#'
+	} else if start_dir == "down" {
+		level_map[i][j+1] = '#'
+	} else if start_dir == "left" {
+		level_map[i+1][j] = '#'
+	}
 	path_found := false
 	path := make(map[coordinate][]string)
 
