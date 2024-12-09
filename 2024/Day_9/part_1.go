@@ -20,9 +20,10 @@ func Part1() {
 	shared.ErrCheck(err)
 
 	char := make([]byte, 1)
-	is_file := true
 	file_id := 0
-	memory := []byte{}
+	is_file := true
+	memory := []int{}
+	checksum := new(big.Int)
 
 	for cursor < eof {
 		_, err = f.Read(char)
@@ -30,14 +31,14 @@ func Part1() {
 		cursor++
 
 		if is_file {
-			for i := 0; i < int(char[0])-48; i++ {
-				memory = append(memory, byte(file_id+48))
+			for range int(char[0]) - 48 {
+				memory = append(memory, file_id)
 			}
 			file_id++
 			is_file = false
 		} else {
-			for i := 0; i < int(char[0])-48; i++ {
-				memory = append(memory, '.')
+			for range int(char[0]) - 48 {
+				memory = append(memory, -1)
 			}
 			is_file = true
 		}
@@ -47,15 +48,15 @@ func Part1() {
 	j := len(memory) - 1
 
 	for i < j {
-		if memory[i] == '.' && memory[j] >= 48 && memory[j] <= 57 {
+		if memory[i] == -1 && memory[j] >= 0 {
 			temp := memory[i]
 			memory[i] = memory[j]
 			memory[j] = temp
 			i++
 			j--
-		} else if memory[i] == '.' {
+		} else if memory[i] == -1 {
 			j--
-		} else if memory[j] >= 48 && memory[j] <= 57 {
+		} else if memory[j] >= 0 {
 			i++
 		} else {
 			i++
@@ -63,14 +64,13 @@ func Part1() {
 		}
 	}
 
-	checksum := big.NewInt(0)
 	for i := range memory {
-		if memory[i] == '.' {
+		if memory[i] == -1 {
 			break
 		}
-		file_idx := big.NewInt(int64(memory[i]) - 48)
+		file_id := big.NewInt(int64(memory[i]))
 		idx := big.NewInt(int64(i))
-		num := new(big.Int).Mul(file_idx, idx)
+		num := new(big.Int).Mul(file_id, idx)
 		checksum = checksum.Add(checksum, num)
 	}
 
