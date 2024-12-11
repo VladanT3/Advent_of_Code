@@ -1,7 +1,6 @@
-package day_10_24
+package day10_24
 
 import (
-	"fmt"
 	"io"
 	"os"
 	"strconv"
@@ -48,13 +47,11 @@ func Part2() {
 		}
 	}
 
-	fmt.Println(score)
-
 	out, err := os.Create("output.txt")
 	shared.ErrCheck(err)
 	defer out.Close()
 
-	_, err = out.WriteString("Part 1: " + strconv.Itoa(score))
+	_, err = out.WriteString("\nPart 2: " + strconv.Itoa(score))
 	shared.ErrCheck(err)
 	out.Sync()
 }

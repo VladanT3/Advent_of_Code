@@ -1,4 +1,4 @@
-package day_10_24
+package day10_24
 
 import "testing"
 
