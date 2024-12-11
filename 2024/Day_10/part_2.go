@@ -47,7 +47,7 @@ func Part2() {
 		}
 	}
 
-	out, err := os.Create("output.txt")
+	out, err := os.OpenFile("output.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	shared.ErrCheck(err)
 	defer out.Close()
 
