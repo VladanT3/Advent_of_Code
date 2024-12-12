@@ -1,7 +1,6 @@
 package day11_24
 
 import (
-	"fmt"
 	"io"
 	"math"
 	"os"
@@ -41,14 +40,10 @@ func Part2() {
 	}
 	stones = append(stones, num)
 
-	stone_count := len(stones)
-	blinks := 0
-	i := 0
-	for blinks < 75 {
-		for i < len(stones) {
+	for range 75 {
+		for i := range stones {
 			if stones[i] == 0 {
 				stones[i] = 1
-				i++
 				continue
 			}
 
@@ -70,39 +65,19 @@ func Part2() {
 					digit_counter--
 				}
 
-				if i < len(stones)-1 {
-					in := -1
-					out := second_half
-					stones = append(stones, stones[len(stones)-1])
-					for j := i + 1; j < len(stones)-1; j++ {
-						in = out
-						out = stones[j]
-						stones[j] = in
-					}
-				} else {
-					stones = append(stones, second_half)
-				}
-				stone_count++
-				i += 2
-				break
+				stones = append(stones, second_half)
+				continue
 			}
 
 			stones[i] *= 2024
-			i++
-		}
-		if i >= len(stones) {
-			blinks++
-			i = 0
 		}
 	}
-
-	fmt.Println(stone_count)
 
 	out, err := os.OpenFile("output.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	shared.ErrCheck(err)
 	defer out.Close()
 
-	_, err = out.WriteString("\nPart 2: " + strconv.Itoa(stone_count))
+	_, err = out.WriteString("\nPart 2: " + strconv.Itoa(len(stones)))
 	shared.ErrCheck(err)
 	out.Sync()
 }
