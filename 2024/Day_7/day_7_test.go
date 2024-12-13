@@ -4,4 +4,5 @@ import "testing"
 
 func TestDay7(t *testing.T) {
 	Part1()
+	Part2()
 }
