@@ -24,23 +24,26 @@ type robot struct {
 	vel velocity
 }
 
+const height = 103
+const width = 101
+
 func Part1() {
 	robots := GetRobots()
 
 	for range 100 {
-		for _, robot := range robots {
-			robot.pos.x += robot.vel.x
-			robot.pos.y += robot.vel.y
+		for i := range robots {
+			robots[i].pos.x += robots[i].vel.x
+			robots[i].pos.y += robots[i].vel.y
 
-			if robot.pos.x > 100 {
-				robot.pos.x -= 100
-			} else if robot.pos.x < 0 {
-				robot.pos.x += 100
+			if robots[i].pos.x >= width {
+				robots[i].pos.x -= width
+			} else if robots[i].pos.x < 0 {
+				robots[i].pos.x += width
 			}
-			if robot.pos.y > 102 {
-				robot.pos.y -= 102
-			} else if robot.pos.y < 0 {
-				robot.pos.y += 102
+			if robots[i].pos.y >= height {
+				robots[i].pos.y -= height
+			} else if robots[i].pos.y < 0 {
+				robots[i].pos.y += height
 			}
 		}
 	}
@@ -50,16 +53,16 @@ func Part1() {
 	quadrant_3 := 0
 	quadrant_4 := 0
 	for _, robot := range robots {
-		if robot.pos.x < 50 && robot.pos.y < 51 {
+		if robot.pos.x < width/2 && robot.pos.y < height/2 {
 			quadrant_1++
 		}
-		if robot.pos.x > 50 && robot.pos.y < 51 {
+		if robot.pos.x > width/2 && robot.pos.y < height/2 {
 			quadrant_2++
 		}
-		if robot.pos.x < 50 && robot.pos.y > 51 {
+		if robot.pos.x < width/2 && robot.pos.y > height/2 {
 			quadrant_3++
 		}
-		if robot.pos.x > 50 && robot.pos.y > 51 {
+		if robot.pos.x > width/2 && robot.pos.y > height/2 {
 			quadrant_4++
 		}
 	}
