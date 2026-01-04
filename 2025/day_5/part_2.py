@@ -1,32 +1,22 @@
 ranges = []
 with open("/home/vladan/Projects/Advent_of_Code/2025/day_5/input.txt") as f:
     ids = f.read().split("\n\n")
-    ranges = ids[0].split("\n")
+    ids = ids[0].split("\n")
+    for rng in ids:
+        lower, higher = rng.split("-")
+        ranges.append((int(lower), int(higher)))
+    ranges.sort()
 
 unique_ranges = []
-while True:
-    curr_lower, curr_higher = map(int, ranges[0].split("-"))
-    new_ranges = ranges.copy()
+for lower, higher in ranges:
+    if not unique_ranges:
+        unique_ranges.append([lower, higher])
+    else:
+        last_lower, last_higher = unique_ranges[-1]
+        if lower <= last_higher + 1:
+            unique_ranges[-1][1] = max(higher, last_higher)
+        else:
+            unique_ranges.append([lower, higher])
 
-    for id_range in ranges:
-        lower, higher = map(int, id_range.split("-"))
-        if curr_lower >= lower and curr_lower <= higher:
-            curr_lower = lower
-            try:
-                new_ranges.remove(id_range)
-            except ValueError:
-                pass
-        if curr_higher >= lower and curr_higher <= higher:
-            curr_higher = higher
-            try:
-                new_ranges.remove(id_range)
-            except ValueError:
-                pass
-
-    unique_ranges.append([curr_lower, curr_higher])
-
-    ranges = new_ranges.copy()
-    if len(ranges) == 0:
-        break
-
-print(unique_ranges)
+count = sum(higher - lower + 1 for lower, higher in unique_ranges)
+print(count)
